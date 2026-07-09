@@ -2,6 +2,7 @@ import { profile } from "@/data/profile";
 import { SectionLabel } from "@/components/ui/section-label";
 import { TerminalWindow } from "@/components/ui/terminal-window";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
+import { Tilt3DCard } from "@/components/ui/tilt-3d-card";
 
 export function About() {
   return (
@@ -47,17 +48,16 @@ export function About() {
 
                 <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {profile.quickStats.map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="rounded-lg border border-border bg-bg-elevated/60 p-4"
-                    >
-                      <div className="text-lg font-semibold text-fg sm:text-xl">
-                        {stat.value}
+                    <Tilt3DCard key={stat.label} maxTilt={6} className="h-full">
+                      <div className="hover-glow h-full rounded-lg border border-border bg-bg-elevated/60 p-4">
+                        <div className="text-lg font-semibold text-fg sm:text-xl">
+                          {stat.value}
+                        </div>
+                        <div className="mt-1 font-mono text-[11px] text-fg-dim">
+                          {stat.label}
+                        </div>
                       </div>
-                      <div className="mt-1 font-mono text-[11px] text-fg-dim">
-                        {stat.label}
-                      </div>
-                    </div>
+                    </Tilt3DCard>
                   ))}
                 </div>
               </div>

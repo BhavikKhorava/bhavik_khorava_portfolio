@@ -36,8 +36,9 @@ edit these, not the components, to change what's displayed:
 |---|---|---|
 | `src/data/profile.ts` | Hero, About, Contact, Footer | name, title, tagline, email, phone, LinkedIn, GitHub (placeholder `#` — update `profile.github.url` once you have a real URL), status label, about paragraph, quick stats |
 | `src/data/experience.ts` | Experience ("ps aux") section | Array of `ExperienceEntry`. **Veloc entry has placeholder bullets** marked with `// placeholder — refine with real detail` comments — replace once finalized. `status: "RUNNING"` is what marks the current/active role (green pulsing badge); everything else is `"EXITED"` |
-| `src/data/projects.ts` | Projects ("kubectl get deployments") section | Array of `ProjectEntry`. `stack` renders as tag chips, `bullets` renders as the expanded detail list, `namespace`/`replicas` are cosmetic (kubectl-flavored labels, not real infra) |
-| `src/data/skills.ts` | Tech Stack ("package.json") section | Array of `SkillGroup`, each with a `label`, fake semver `version` (cosmetic), and `items` list rendered as chips |
+| `src/data/projects.ts` | Projects ("kubectl get deployments") section | Array of `ProjectEntry`. `stack` renders as tag chips, `bullets` renders as the expanded detail list, `namespace`/`replicas` are cosmetic (kubectl-flavored labels, not real infra). `ai: true` renders an amber "AI/RAG" badge on the row — only set it on projects with real OpenAI/vector work |
+| `src/data/skills.ts` | Tech Stack ("package.json") section | Array of `SkillGroup`, each with a `label`, fake semver `version` (cosmetic), and `items` list rendered as chips. The `ai` group ("ai-ml-and-vector-systems") is deliberately ordered right after languages/backend to keep the AI positioning prominent |
+| `src/data/rag-pipeline.ts` | AI Systems ("rag_pipeline.json") section | Array of `PipelineStage` — the generic RAG pipeline pattern (document → embedding → vector store → retrieval → LLM → response). It's a pattern description, not a fabricated product — keep it factual |
 | `src/data/education.ts` | Education section | Array of `EducationEntry` |
 
 Adding a new project/experience/skill entry = add an object to the array; no
@@ -51,20 +52,22 @@ JSX line in `src/app/page.tsx`.
 `src/app/page.tsx` assembles the whole page in order:
 
 ```
-Navbar → Hero → About → TechStack → Experience → Projects → Education → Contact → Footer
+Navbar → Hero → About → TechStack → AiSystems → Experience → Projects → Education → Contact → Footer
 ```
 
 Section order/inclusion is controlled entirely here. Nav anchors
-(`#about`, `#stack`, `#experience`, `#projects`, `#education`, `#contact`)
-must match each section's `id` prop — defined in `src/components/navbar.tsx`
-`NAV_ITEMS` array and each `src/components/sections/*.tsx` file's outer
-`<section id="...">`.
+(`#about`, `#stack`, `#ai`, `#experience`, `#projects`, `#education`,
+`#contact`) must match each section's `id` prop — defined in
+`src/components/navbar.tsx` `NAV_ITEMS` array and each
+`src/components/sections/*.tsx` file's outer `<section id="...">`.
+Section label indices (`// 0X_...`) are numbered in page order — if you
+add/remove a section, renumber the `index` props downstream of it.
 
 `src/app/layout.tsx` wraps everything with: fonts, global `<Metadata>`
 (title/description/OG/Twitter tags — **update `siteUrl` here** once a real
 domain is chosen, it's currently the placeholder `https://bhavikkhorava.dev`,
-also used in `sitemap.ts` and `robots.ts`), `BootScreen`, `ScrollProgress`,
-`SmoothScrollProvider`.
+also used in `sitemap.ts` and `robots.ts`), `BootScreen`, `CustomCursor`,
+`ScrollProgress`, `SmoothScrollProvider`.
 
 ---
 
@@ -90,8 +93,24 @@ classes, nothing is hardcoded as a raw hex in components.
 
 Utility classes also defined there: `.bg-grid` (faint grid backdrop),
 `.bg-scanlines`, `.glow-accent` (text glow), `.glass-panel` (blurred
-translucent card), `.text-balance`. Reduced-motion users get all animations
-disabled via the `@media (prefers-reduced-motion: reduce)` block.
+translucent card), `.text-balance`, `.hover-glow` (shared accent
+border+shadow card hover treatment), `.tag-chip` (terminal-autocomplete-style
+hover for skill/stack chips — accent tint + `›` marker). Reduced-motion users
+get all animations disabled via the `@media (prefers-reduced-motion: reduce)`
+block, and JS-driven effects (cursor, tilt, canvas globe, parallax) check
+reduced-motion themselves.
+
+`html.has-custom-cursor` (added by `CustomCursor` at runtime) hides the
+native cursor site-wide; form fields keep the native text caret via a
+higher-specificity override.
+
+## Motion conventions (`src/lib/motion.ts`)
+
+Shared motion constants so every effect feels cohesive: `SPRING_SNAPPY`
+(cursor-followers: magnetic, cursor ring), `SPRING_SOFT` (larger surfaces:
+3D card tilt), `EASE_OUT` (the site-wide `[0.22, 1, 0.36, 1]` reveal curve).
+New animated components should pull from here instead of inventing new
+spring/ease values.
 
 ---
 
@@ -101,16 +120,18 @@ Reusable building blocks used across every section — prefer these over
 one-off markup when adding new sections:
 
 - **`section-label.tsx`** — the `// 0X_SECTION_NAME` + `$ command` heading style used at the top of every section
-- **`terminal-window.tsx`** — the traffic-light-dot card chrome wrapper (used by About, Tech Stack, Experience, Contact)
-- **`reveal.tsx`** — `Reveal` (single fade+slide-up on scroll into view), `RevealGroup`/`RevealItem` (staggered children variant) — built on Framer Motion `whileInView`
-- **`magnetic.tsx`** — wraps any element so it subtly follows the cursor on hover (buttons, links)
+- **`terminal-window.tsx`** — the traffic-light-dot card chrome wrapper (used by About, Tech Stack, AI Systems, Experience, Contact)
+- **`reveal.tsx`** — `Reveal` (single fade+slide-up on scroll into view), `RevealGroup`/`RevealItem` (staggered children variant), `Reveal3D` (swings up from a receding perspective plane — used for Experience rows) — built on Framer Motion `whileInView`
+- **`magnetic.tsx`** — wraps any element so it subtly follows the cursor on hover (buttons, links, nav items)
+- **`tilt-3d-card.tsx`** — `Tilt3DCard` perspective tilt-on-hover wrapper with a cursor-tracking accent glare. Pure CSS transforms on springs (no 3D lib). `maxTilt` should stay small (2–6°); pass `disabled` when tilt would fight other interactions (e.g. expanded project rows). Self-disables for reduced motion
 - **`button.tsx`** — the shared CTA button; auto-detects `href="#..."` and routes it through Lenis's `scrollToHash` instead of a hard jump
 - **`typewriter.tsx`** — character-by-character reveal with blinking cursor, used in Hero's `$ whoami` line
 
 ## Section components (`src/components/sections/`)
 
 One file per landing-page section (`hero.tsx`, `about.tsx`, `tech-stack.tsx`,
-`experience.tsx`, `projects.tsx`, `education.tsx`, `contact.tsx`). Each reads
+`ai-systems.tsx`, `experience.tsx`, `projects.tsx`, `education.tsx`,
+`contact.tsx`). Each reads
 from its corresponding `src/data/*.ts` file and composes the `ui/` primitives
 above — there's intentionally no shared "Section" wrapper component since
 each one's internal layout (table-ish rows, JSON-styled blocks, cards) is
@@ -118,8 +139,10 @@ different enough that a generic wrapper would fight the content.
 
 ## Other top-level components (`src/components/`)
 
-- **`navbar.tsx`** — fixed header, condenses/blurs past 24px scroll (`glass-panel` applied conditionally), mobile hamburger menu, all internal links go through `scrollToHash`
+- **`navbar.tsx`** — fixed header, condenses/blurs past 24px scroll (`glass-panel` applied conditionally), mobile hamburger menu, all internal links go through `scrollToHash`; desktop links are `Magnetic`-wrapped
 - **`boot-screen.tsx`** — first-load terminal intro. Client-only via `next/dynamic(..., { ssr: false })` (deliberate — see "Known gotchas" below). Skip state persisted in `sessionStorage` under key `portfolio_booted_v1`; bump that key if you ever want to force it to show again for all returning visitors
+- **`custom-cursor.tsx`** — terminal-flavored custom cursor: near-1:1 dot + spring-trailing ring that morphs into `[ ]` brackets over interactive elements (`a`, `button`, `[data-cursor]`), optional caption via `data-cursor-label="VIEW"` on the element or an ancestor, click "ping" ripple, thin caret over text fields. Only activates on fine pointers without reduced-motion (touch devices keep the native cursor). Same `dynamic(..., { ssr: false })` pattern as BootScreen
+- **`hero-visual.tsx`** — the hero's rotating 3D node-graph globe. Hand-rolled perspective projection on a 2D `<canvas>` (fibonacci-sphere nodes + proximity edges + traveling "packets") — deliberately **not** Three.js, to keep the bundle small. rAF loop pauses via IntersectionObserver when the hero scrolls out of view; reduced-motion gets a single static frame; hidden below `lg`. Colors read from the CSS vars at mount, so it re-themes with `globals.css`
 - **`scroll-progress.tsx`** — thin accent-colored progress bar fixed to the very top, driven by Framer Motion's `useScroll`
 - **`footer.tsx`** — copyright + build-credits line
 

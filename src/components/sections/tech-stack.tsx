@@ -35,7 +35,7 @@ export function TechStack() {
                       {group.items.map((item) => (
                         <span
                           key={item}
-                          className="rounded-md border border-border bg-bg-elevated/70 px-2.5 py-1 text-xs text-fg-muted transition-colors hover:border-accent/50 hover:text-accent"
+                          className="tag-chip rounded-md border border-border bg-bg-elevated/70 px-2.5 py-1 text-xs text-fg-muted"
                         >
                           {item}
                         </span>

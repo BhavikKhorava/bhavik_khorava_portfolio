@@ -33,7 +33,7 @@ export function Contact() {
     <section id="contact" className="relative px-6 py-24 sm:px-10 sm:py-32">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
-          <SectionLabel index="06" title="contact" command="curl -X POST /api/contact" />
+          <SectionLabel index="07" title="contact" command="curl -X POST /api/contact" />
         </Reveal>
 
         <Reveal delay={0.1}>

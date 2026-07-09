@@ -1,7 +1,7 @@
 import { experience } from "@/data/experience";
 import { SectionLabel } from "@/components/ui/section-label";
 import { TerminalWindow } from "@/components/ui/terminal-window";
-import { Reveal } from "@/components/ui/reveal";
+import { Reveal, Reveal3D } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 
 export function Experience() {
@@ -9,7 +9,7 @@ export function Experience() {
     <section id="experience" className="relative px-6 py-24 sm:px-10 sm:py-32">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
-          <SectionLabel index="03" title="experience" command="ps aux --sort=-start" />
+          <SectionLabel index="04" title="experience" command="ps aux --sort=-start" />
         </Reveal>
 
         <Reveal delay={0.1}>
@@ -22,8 +22,8 @@ export function Experience() {
 
             <div className="divide-y divide-border">
               {experience.map((entry, i) => (
-                <Reveal key={entry.company} delay={i * 0.08} y={16}>
-                  <div className="px-5 py-6 sm:px-6">
+                <Reveal3D key={entry.company} delay={i * 0.08}>
+                  <div className="px-5 py-6 transition-colors duration-300 hover:bg-bg-elevated/40 sm:px-6">
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                         <span className="font-mono text-xs text-fg-dim">
@@ -71,7 +71,7 @@ export function Experience() {
                       ))}
                     </ul>
                   </div>
-                </Reveal>
+                </Reveal3D>
               ))}
             </div>
           </TerminalWindow>

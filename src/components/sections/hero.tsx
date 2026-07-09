@@ -1,10 +1,19 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 import { profile } from "@/data/profile";
 import { Typewriter } from "@/components/ui/typewriter";
 import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/magnetic";
+import { HeroVisual } from "@/components/hero-visual";
+import { EASE_OUT } from "@/lib/motion";
 
 const container: Variants = {
   hidden: {},
@@ -16,21 +25,47 @@ const item: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.6, ease: EASE_OUT },
   },
 };
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  // Layered parallax: background grid, glow, and the 3D globe each scroll
+  // away at different speeds for depth. Neutralized for reduced motion.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const gridY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const glowY = useTransform(scrollYProgress, [0, 1], [0, 180]);
+  const visualY = useTransform(scrollYProgress, [0, 1], [0, -70]);
+
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pt-28 pb-16 sm:px-10"
     >
-      <div className="bg-grid pointer-events-none absolute inset-0" />
-      <div
-        className="pointer-events-none absolute -top-40 left-1/2 h-[560px] w-[860px] -translate-x-1/2 rounded-full opacity-20 blur-[120px]"
-        style={{ background: "var(--accent)" }}
+      <motion.div
+        className="bg-grid pointer-events-none absolute inset-0"
+        style={{ y: prefersReducedMotion ? 0 : gridY }}
       />
+      <motion.div
+        className="pointer-events-none absolute -top-40 left-1/2 h-[560px] w-[860px] -translate-x-1/2 rounded-full opacity-20 blur-[120px]"
+        style={{ background: "var(--accent)", y: prefersReducedMotion ? 0 : glowY }}
+      />
+
+      {/* 3D node-graph globe — decorative, right-anchored, desktop only */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute top-1/2 -right-24 z-0 hidden h-[560px] w-[560px] -translate-y-1/2 opacity-70 lg:block xl:-right-8"
+        style={{ y: prefersReducedMotion ? 0 : visualY }}
+      >
+        <HeroVisual />
+      </motion.div>
 
       <motion.div
         variants={container}
@@ -44,7 +79,7 @@ export function Hero() {
           </div>
           <div className="mt-1">
             <Typewriter
-              text="bhavik_khorava — backend engineer"
+              text="bhavik_khorava — backend / ai systems engineer"
               startDelay={400}
               speed={28}
               className="text-fg"
@@ -73,8 +108,8 @@ export function Hero() {
           className="mt-6 max-w-2xl text-balance text-base text-fg-muted sm:text-lg"
         >
           {profile.tagline} — REST APIs, PostgreSQL &amp; MongoDB, secure payment
-          workflows, and growing expertise in AI-powered systems (OpenAI API,
-          vector databases).
+          workflows, and RAG pipelines that wire OpenAI &amp; Claude models to
+          vector databases (Pinecone) in production backends.
         </motion.p>
 
         <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
@@ -96,6 +131,7 @@ export function Hero() {
             <a
               href={`mailto:${profile.email}`}
               className="transition-colors hover:text-accent"
+              data-cursor-label="EMAIL"
             >
               {profile.email}
             </a>
@@ -106,6 +142,7 @@ export function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-accent"
+              data-cursor-label="OPEN"
             >
               linkedin/{profile.linkedin.label}
             </a>
