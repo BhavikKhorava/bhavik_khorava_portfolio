@@ -3,6 +3,7 @@ import { JetBrains_Mono, Inter } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { BootScreen } from "@/components/boot-screen";
+import { CustomCursor } from "@/components/custom-cursor";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -26,18 +27,23 @@ export const metadata: Metadata = {
     template: "%s — Bhavik Khorava",
   },
   description:
-    "Bhavik Khorava is a Node.js backend developer with 4+ years of experience building scalable REST APIs, real-time infrastructure, secure payment systems, and AI-powered backends with OpenAI and vector databases.",
+    "Bhavik Khorava is a Node.js backend developer with 4+ years of experience building scalable REST APIs, real-time infrastructure, secure payment systems, and AI-powered backends — RAG pipelines with OpenAI, Claude, and vector databases like Pinecone.",
   keywords: [
     "Bhavik Khorava",
     "Node.js Developer",
     "Backend Developer",
     "Backend Engineer",
+    "AI Engineer",
+    "RAG Pipeline",
+    "Retrieval-Augmented Generation",
     "TypeScript Developer",
     "REST API",
     "Express.js",
     "MongoDB",
     "PostgreSQL",
     "OpenAI API",
+    "Claude API",
+    "Pinecone",
     "Vector Database",
   ],
   authors: [{ name: "Bhavik Khorava" }],
@@ -47,14 +53,14 @@ export const metadata: Metadata = {
     url: siteUrl,
     title: "Bhavik Khorava — Node.js Backend Developer",
     description:
-      "4+ years building scalable backend systems: REST APIs, real-time infrastructure, payments, and AI-powered systems.",
+      "4+ years building scalable backend systems: REST APIs, real-time infrastructure, payments, and RAG-based AI systems (OpenAI, Claude, Pinecone).",
     siteName: "Bhavik Khorava",
   },
   twitter: {
     card: "summary_large_image",
     title: "Bhavik Khorava — Node.js Backend Developer",
     description:
-      "4+ years building scalable backend systems: REST APIs, real-time infrastructure, payments, and AI-powered systems.",
+      "4+ years building scalable backend systems: REST APIs, real-time infrastructure, payments, and RAG-based AI systems (OpenAI, Claude, Pinecone).",
   },
   robots: {
     index: true,
@@ -74,6 +80,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-bg text-fg selection:bg-accent/30">
         <BootScreen />
+        <CustomCursor />
         <ScrollProgress />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>

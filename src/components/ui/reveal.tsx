@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { EASE_OUT } from "@/lib/motion";
 
 interface RevealProps {
   children: ReactNode;
@@ -43,6 +44,36 @@ export function RevealGroup({
       whileInView="visible"
       viewport={{ once, margin: "-80px" }}
       transition={{ staggerChildren: stagger }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/**
+ * Like `Reveal`, but the element swings up from a receding 3D plane
+ * (rotateX + perspective) — used for timeline/list rows that should feel
+ * like they sit on a surface tilting into the page.
+ */
+export function Reveal3D({
+  children,
+  className,
+  delay = 0,
+  once = true,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  once?: boolean;
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 28, rotateX: -16 }}
+      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+      viewport={{ once, margin: "-80px" }}
+      transition={{ duration: 0.7, delay, ease: EASE_OUT }}
+      style={{ transformPerspective: 1000, transformOrigin: "top center" }}
     >
       {children}
     </motion.div>

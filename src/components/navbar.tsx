@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { scrollToHash } from "@/lib/lenis";
+import { Magnetic } from "@/components/ui/magnetic";
 
 const NAV_ITEMS = [
   { href: "#about", label: "about" },
   { href: "#stack", label: "stack" },
+  { href: "#ai", label: "ai_systems" },
   { href: "#experience", label: "experience" },
   { href: "#projects", label: "projects" },
   { href: "#education", label: "education" },
@@ -54,16 +56,18 @@ export function Navbar() {
         <ul className="hidden items-center gap-6 md:flex">
           {NAV_ITEMS.map((item) => (
             <li key={item.href}>
-              <a
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToHash(item.href);
-                }}
-                className="font-mono text-xs text-fg-muted transition-colors hover:text-accent"
-              >
-                {item.label}
-              </a>
+              <Magnetic strength={0.25}>
+                <a
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToHash(item.href);
+                  }}
+                  className="font-mono text-xs text-fg-muted transition-colors hover:text-accent"
+                >
+                  {item.label}
+                </a>
+              </Magnetic>
             </li>
           ))}
         </ul>

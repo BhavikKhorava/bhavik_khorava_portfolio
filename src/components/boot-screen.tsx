@@ -9,7 +9,7 @@ const BOOT_LINES = [
   { text: "connecting to remote_host... OK", delay: 120 },
   { text: "$ initializing_portfolio --env=production", delay: 120 },
   { text: "loading modules: experience, projects, tech_stack... OK", delay: 260 },
-  { text: "mounting AI layer: openai, vector-db... OK", delay: 260 },
+  { text: "mounting AI layer: rag-pipeline, openai, claude, pinecone... OK", delay: 260 },
   { text: "$ whoami", delay: 200 },
   { text: "bhavik_khorava — node.js backend developer", delay: 260 },
   { text: "SYSTEM_ONLINE", delay: 340 },
