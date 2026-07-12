@@ -107,9 +107,9 @@ export function Hero() {
           variants={item}
           className="mt-6 max-w-2xl text-balance text-base text-fg-muted sm:text-lg"
         >
-          {profile.tagline} — REST APIs, PostgreSQL &amp; MongoDB, secure payment
-          workflows, and RAG pipelines that wire OpenAI &amp; Claude models to
-          vector databases (Pinecone) in production backends.
+          {profile.tagline}
+          {" "}REST APIs, PostgreSQL &amp; MongoDB, secure payment workflows,
+          and RAG pipelines wiring OpenAI &amp; Claude to Pinecone.
         </motion.p>
 
         <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">

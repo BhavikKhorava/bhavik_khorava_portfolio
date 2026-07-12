@@ -16,7 +16,7 @@ export function Projects() {
     <section id="projects" className="relative px-6 py-24 sm:px-10 sm:py-32">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
-          <SectionLabel index="05" title="projects" command="kubectl get deployments" />
+          <SectionLabel index="05" title="projects" command="gh workflow run --status success" />
         </Reveal>
 
         <Reveal delay={0.1}>

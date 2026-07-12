@@ -3,7 +3,7 @@ export const profile = {
   handle: "bhavik-khorava",
   title: "Node.js Backend Developer",
   subtitle: "AI / RAG Systems Engineer",
-  tagline: "4+ years building scalable backend systems in JavaScript & TypeScript",
+  tagline: "4+ years shipping production backend systems in JavaScript & TypeScript",
   location: "India",
   email: "khoravabhavik0848@gmail.com",
   phone: "+91 8264050663",
