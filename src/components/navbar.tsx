@@ -53,7 +53,7 @@ export function Navbar() {
           <span className="text-accent">~/</span>bhavik.khorava
         </a>
 
-        <ul className="hidden items-center gap-6 md:flex">
+        <ul className="hidden items-center gap-5 lg:flex xl:gap-6">
           {NAV_ITEMS.map((item) => (
             <li key={item.href}>
               <Magnetic strength={0.25}>
@@ -78,14 +78,14 @@ export function Navbar() {
             e.preventDefault();
             scrollToHash("#contact");
           }}
-          className="hidden font-mono text-xs text-accent md:inline-flex items-center gap-1.5"
+          className="hidden font-mono text-xs text-accent lg:inline-flex items-center gap-1.5"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
           available
         </a>
 
         <button
-          className="flex flex-col gap-1.5 md:hidden"
+          className="flex flex-col gap-1.5 p-2 -m-2 lg:hidden"
           aria-label="Toggle menu"
           onClick={() => setMenuOpen((o) => !o)}
         >
@@ -111,9 +111,9 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-16 left-4 right-4 rounded-xl border border-border bg-bg-elevated p-4 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.9)] md:hidden"
+            className="absolute top-16 left-4 right-4 rounded-xl border border-border bg-bg-elevated p-4 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.9)] lg:hidden"
           >
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-1">
               {NAV_ITEMS.map((item) => (
                 <li key={item.href}>
                   <a
@@ -123,7 +123,7 @@ export function Navbar() {
                       setMenuOpen(false);
                       scrollToHash(item.href);
                     }}
-                    className="font-mono text-sm text-fg-muted transition-colors hover:text-accent"
+                    className="block py-2 font-mono text-sm text-fg-muted transition-colors hover:text-accent"
                   >
                     {item.label}
                   </a>

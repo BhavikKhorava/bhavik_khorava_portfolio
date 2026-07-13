@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import {
   motion,
   useMotionTemplate,
@@ -35,6 +35,15 @@ export function Tilt3DCard({
 }: Tilt3DCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  // Touch browsers emit synthetic mousemove on tap — the card would tilt and
+  // stay tilted (no mouseleave). Only react to real hover-capable pointers.
+  const finePointer = useRef(false);
+
+  useEffect(() => {
+    finePointer.current = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    ).matches;
+  }, []);
 
   const rotateX = useSpring(0, SPRING_SOFT);
   const rotateY = useSpring(0, SPRING_SOFT);
@@ -48,7 +57,7 @@ export function Tilt3DCard({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
-    if (!el || inactive) return;
+    if (!el || inactive || !finePointer.current) return;
     const rect = el.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width; // 0..1
     const py = (e.clientY - rect.top) / rect.height;

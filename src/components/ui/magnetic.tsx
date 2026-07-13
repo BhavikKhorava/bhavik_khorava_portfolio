@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { motion, useSpring } from "framer-motion";
+import { SPRING_SNAPPY } from "@/lib/motion";
 
 interface MagneticProps {
   children: ReactNode;
@@ -11,12 +12,22 @@ interface MagneticProps {
 
 export function Magnetic({ children, className, strength = 0.35 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const x = useSpring(0, { stiffness: 200, damping: 15, mass: 0.2 });
-  const y = useSpring(0, { stiffness: 200, damping: 15, mass: 0.2 });
+  // Touch browsers fire synthetic mousemove on tap, which would shift the
+  // element and leave it stuck (no mouseleave follows). Only react on
+  // devices with a real hover-capable fine pointer.
+  const enabled = useRef(false);
+  const x = useSpring(0, SPRING_SNAPPY);
+  const y = useSpring(0, SPRING_SNAPPY);
+
+  useEffect(() => {
+    enabled.current = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    ).matches;
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !enabled.current) return;
     const rect = el.getBoundingClientRect();
     const relX = e.clientX - rect.left - rect.width / 2;
     const relY = e.clientY - rect.top - rect.height / 2;
