@@ -170,8 +170,10 @@ function Field({
   textarea?: boolean;
   required?: boolean;
 }) {
+  // text-base on mobile: iOS Safari auto-zooms the page when a focused
+  // input's font-size is below 16px.
   const baseClasses =
-    "w-full rounded-md border border-border bg-bg-elevated/60 px-3 py-2.5 font-mono text-sm text-fg placeholder:text-fg-dim outline-none transition-colors focus:border-accent/60";
+    "w-full rounded-md border border-border bg-bg-elevated/60 px-3 py-2.5 font-mono text-base text-fg placeholder:text-fg-dim outline-none transition-colors focus:border-accent/60 sm:text-sm";
 
   return (
     <label className="block">

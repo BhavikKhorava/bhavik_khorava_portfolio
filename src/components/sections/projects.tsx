@@ -20,10 +20,10 @@ export function Projects() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mb-4 grid grid-cols-[1fr_auto_auto] gap-3 rounded-t-lg border border-border bg-bg-elevated/60 px-5 py-3 font-mono text-[11px] text-fg-dim sm:grid-cols-[1fr_auto_auto_auto]">
+          <div className="mb-4 grid grid-cols-[1fr_auto] gap-3 rounded-t-lg border border-border bg-bg-elevated/60 px-4 py-3 font-mono text-[11px] text-fg-dim sm:grid-cols-[1fr_auto_auto_auto] sm:px-5">
             <span>NAME</span>
             <span className="hidden sm:block">NAMESPACE</span>
-            <span>READY</span>
+            <span className="hidden sm:block">READY</span>
             <span>STATUS</span>
           </div>
         </Reveal>
@@ -43,7 +43,7 @@ export function Projects() {
                     <button
                       onClick={() => setOpenSlug(isOpen ? null : project.slug)}
                       data-cursor-label={isOpen ? "CLOSE" : "VIEW"}
-                      className="grid w-full grid-cols-[1fr_auto_auto] items-center gap-3 px-5 py-4 text-left font-mono text-sm sm:grid-cols-[1fr_auto_auto_auto]"
+                      className="grid w-full grid-cols-[1fr_auto] items-center gap-3 px-4 py-4 text-left font-mono text-sm sm:grid-cols-[1fr_auto_auto_auto] sm:px-5"
                     >
                       <span className="flex flex-col">
                         <span className="flex flex-wrap items-center gap-2 text-fg">
@@ -67,7 +67,7 @@ export function Projects() {
                       <span className="hidden text-xs text-fg-muted sm:block">
                         {project.namespace}
                       </span>
-                      <span className="text-xs text-fg-muted">
+                      <span className="hidden text-xs text-fg-muted sm:block">
                         {project.replicas}/{project.replicas}
                       </span>
                       <span className="flex items-center gap-1.5 text-xs text-success">
@@ -85,7 +85,7 @@ export function Projects() {
                           transition={{ duration: 0.35, ease: EASE_OUT }}
                           className="border-t border-border"
                         >
-                          <div className="px-5 py-5 sm:px-6">
+                          <div className="px-4 py-5 sm:px-6">
                             <div className="mb-4 flex flex-wrap gap-2">
                               {project.stack.map((tech) => (
                                 <span

@@ -48,6 +48,12 @@ html {
   color-scheme: dark;
 }
 
+/* Safety net: no stray wide element may cause sideways scroll on mobile. */
+html,
+body {
+  overflow-x: clip;
+}
+
 section[id] {
   scroll-margin-top: 6rem;
 }
@@ -128,12 +134,6 @@ html.has-custom-cursor select {
 .hover-glow {
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.hover-glow:hover {
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-color));
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
-    0 8px 40px -12px color-mix(in srgb, var(--accent) 25%, transparent);
-}
 
 /* Terminal-autocomplete-style hover for skill/tech tag chips: the chip
    highlights like a selected completion entry and gains a `›` marker. */
@@ -150,14 +150,25 @@ html.has-custom-cursor select {
   color: var(--accent);
   transition: opacity 0.18s ease;
 }
-.tag-chip:hover {
-  background: color-mix(in srgb, var(--accent) 14%, var(--bg-elevated));
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-color));
-  color: var(--accent);
-  padding-left: 1.35rem;
-}
-.tag-chip:hover::before {
-  opacity: 1;
+
+/* Hover treatments only on hover-capable devices — on touch, a tap would
+   otherwise leave the element stuck in its hover state. */
+@media (hover: hover) {
+  .hover-glow:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border-color));
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
+      0 8px 40px -12px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+  .tag-chip:hover {
+    background: color-mix(in srgb, var(--accent) 14%, var(--bg-elevated));
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--border-color));
+    color: var(--accent);
+    padding-left: 1.35rem;
+  }
+  .tag-chip:hover::before {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

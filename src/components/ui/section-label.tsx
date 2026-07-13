@@ -14,9 +14,9 @@ export function SectionLabel({ index, title, command, className }: SectionLabelP
         {"// "}
         {index}_{title.toUpperCase().replace(/\s+/g, "_")}
       </span>
-      <h2 className="text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+      <h2 className="break-words text-2xl font-semibold tracking-tight text-fg sm:text-3xl md:text-4xl">
         {command ? (
-          <span className="font-mono text-2xl text-accent sm:text-3xl">$ </span>
+          <span className="font-mono text-xl text-accent sm:text-2xl md:text-3xl">$ </span>
         ) : null}
         {command ?? title}
       </h2>
