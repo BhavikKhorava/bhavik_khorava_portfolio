@@ -6,7 +6,7 @@ import { Tilt3DCard } from "@/components/ui/tilt-3d-card";
 
 export function AiSystems() {
   return (
-    <section id="ai" className="relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="ai" className="section-glow relative px-6 py-14 sm:px-10 sm:py-20">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
           <SectionLabel index="03" title="ai systems" command="cat rag_pipeline.json" />
@@ -29,7 +29,7 @@ export function AiSystems() {
               {ragPipeline.map((stage, i) => (
                 <RevealItem key={stage.key} className="relative h-full">
                   <Tilt3DCard maxTilt={6} className="h-full">
-                    <div className="hover-glow relative h-full rounded-lg border border-border bg-bg-elevated/60 p-4">
+                    <div className="hover-glow panel-gradient relative h-full rounded-lg border border-border bg-bg-elevated/60 p-4">
                       <div className="mb-2 flex items-center justify-between font-mono text-[11px]">
                         <span className="text-fg-dim">
                           [{String(i).padStart(2, "0")}]

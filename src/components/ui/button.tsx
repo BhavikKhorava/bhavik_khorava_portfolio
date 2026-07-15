@@ -18,7 +18,7 @@ export function Button({ children, href, variant = "primary", className, externa
   const classes = cn(
     "inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm transition-colors duration-200",
     variant === "primary"
-      ? "bg-accent text-accent-foreground hover:bg-accent/90"
+      ? "accent-gradient text-accent-foreground transition-[filter] hover:brightness-110"
       : "border border-border-strong text-fg hover:border-accent/60 hover:text-accent",
     className
   );

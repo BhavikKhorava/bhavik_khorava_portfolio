@@ -20,8 +20,16 @@ the codebase is organized.
 - **Lenis** — smooth scrolling, driven by `gsap.ticker` (see
   `src/components/providers/smooth-scroll-provider.tsx`)
 - **clsx + tailwind-merge** — combined into the `cn()` helper (`src/lib/utils.ts`)
-- No CMS, no backend/API routes — everything is static, content lives in
-  typed data files, contact form falls back to `mailto:`
+- **nodemailer** — powers the one API route, `POST /api/contact`
+  (`src/app/api/contact/route.ts`): validates the payload (honeypot `company`
+  field + per-IP in-memory rate limit) and relays the message over SMTP to
+  `CONTACT_TO_EMAIL`. SMTP credentials live in `.env` (never committed —
+  `.env.example` is the committed template; for Gmail use an App Password,
+  not the account password). If the env vars are missing it returns 503 and
+  the form shows its error state with a direct `mailto:` fallback link
+- No CMS, no database — page content is static and lives in typed data
+  files; the contact API route is the only server-side code (so the app
+  needs a Node/serverless host like Vercel, not pure static hosting)
 
 Run locally: `npm run dev`. Build: `npm run build`. Lint: `npm run lint`.
 
@@ -93,9 +101,16 @@ classes, nothing is hardcoded as a raw hex in components.
 
 Utility classes also defined there: `.bg-grid` (faint grid backdrop),
 `.bg-scanlines`, `.glow-accent` (text glow), `.glass-panel` (blurred
-translucent card), `.text-balance`, `.hover-glow` (shared accent
-border+shadow card hover treatment), `.tag-chip` (terminal-autocomplete-style
-hover for skill/stack chips — accent tint + `›` marker). Reduced-motion users
+translucent card with a faint top sheen), `.text-balance`, `.hover-glow`
+(shared accent border+shadow card hover treatment), `.tag-chip`
+(terminal-autocomplete-style hover for skill/stack chips — accent tint + `›`
+marker), `.gradient-text` (silver-fade headline fill — hero h1 + section
+headings), `.accent-gradient` (amber gradient + inner highlight for primary
+CTAs), `.panel-gradient` (faint diagonal sheen layered over card surfaces),
+`.section-divider` (hairline gradient rule — rendered between sections by
+`page.tsx`'s local `Divider` and above the footer), `.section-glow` /
+`.section-glow-r` (per-section ambient amber radial glow, left/right variants
+alternated down the page). Reduced-motion users
 get all animations disabled via the `@media (prefers-reduced-motion: reduce)`
 block, and JS-driven effects (cursor, tilt, canvas globe, parallax) check
 reduced-motion themselves.

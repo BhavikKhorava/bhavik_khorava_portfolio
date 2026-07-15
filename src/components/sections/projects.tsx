@@ -13,7 +13,7 @@ export function Projects() {
   const [openSlug, setOpenSlug] = useState<string | null>(projects[0]?.slug ?? null);
 
   return (
-    <section id="projects" className="relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="projects" className="section-glow relative px-6 py-14 sm:px-10 sm:py-20">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
           <SectionLabel index="05" title="projects" command="gh workflow run --status success" />
@@ -36,7 +36,7 @@ export function Projects() {
                 <Tilt3DCard maxTilt={2} disabled={isOpen}>
                   <div
                     className={cn(
-                      "hover-glow group overflow-hidden rounded-lg border border-border bg-bg-panel/60",
+                      "hover-glow panel-gradient group overflow-hidden rounded-lg border border-border bg-bg-panel/60",
                       isOpen && "border-border-strong"
                     )}
                   >

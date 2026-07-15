@@ -5,7 +5,7 @@ import { Tilt3DCard } from "@/components/ui/tilt-3d-card";
 
 export function Education() {
   return (
-    <section id="education" className="relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="education" className="section-glow-r relative px-6 py-14 sm:px-10 sm:py-20">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
           <SectionLabel index="06" title="education" command="cat education.log" />
@@ -15,7 +15,7 @@ export function Education() {
           {education.map((entry) => (
             <RevealItem key={entry.degree}>
               <Tilt3DCard maxTilt={5} className="h-full">
-                <div className="hover-glow h-full rounded-lg border border-border bg-bg-panel/60 p-6">
+                <div className="hover-glow panel-gradient h-full rounded-lg border border-border bg-bg-panel/60 p-6">
                 <div className="mb-3 flex items-center justify-between font-mono text-xs text-fg-dim">
                   <span>{entry.period}</span>
                   <span className="rounded-full border border-border-strong px-2 py-0.5 text-accent">

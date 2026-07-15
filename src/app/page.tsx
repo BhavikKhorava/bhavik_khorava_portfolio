@@ -9,6 +9,14 @@ import { Education } from "@/components/sections/education";
 import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/footer";
 
+function Divider() {
+  return (
+    <div className="px-6 sm:px-10">
+      <div className="section-divider mx-auto w-full max-w-4xl" />
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -16,11 +24,17 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <About />
+        <Divider />
         <TechStack />
+        <Divider />
         <AiSystems />
+        <Divider />
         <Experience />
+        <Divider />
         <Projects />
+        <Divider />
         <Education />
+        <Divider />
         <Contact />
       </main>
       <Footer />

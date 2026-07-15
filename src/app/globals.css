@@ -107,10 +107,84 @@ body {
 }
 
 .glass-panel {
-  background: color-mix(in srgb, var(--bg-panel) 78%, transparent);
+  /* faint top sheen over the translucent panel — subtle "lit from above" feel */
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--fg) 4%, transparent), transparent 45%),
+    color-mix(in srgb, var(--bg-panel) 78%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
+}
+
+/* Silver-fade gradient headline text. Child spans that set their own color
+   (e.g. the accent `$`) still render normally. */
+.gradient-text {
+  background-image: linear-gradient(
+    180deg,
+    var(--fg) 30%,
+    color-mix(in srgb, var(--fg) 55%, var(--bg))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Amber gradient fill + inner highlight for primary CTAs. */
+.accent-gradient {
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 82%, white) 0%,
+    var(--accent) 45%,
+    color-mix(in srgb, var(--accent) 82%, black) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 30%, transparent),
+    0 10px 28px -12px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+/* Faint diagonal sheen layered over card surfaces (keeps their own bg). */
+.panel-gradient {
+  background-image: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--fg) 3.5%, transparent),
+    transparent 55%
+  );
+}
+
+/* Hairline gradient rule between sections. */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--accent) 22%, var(--border-color)),
+    transparent
+  );
+}
+
+/* Per-section ambient amber glow bleeding down from the top edge.
+   z-index -1 keeps it behind the section's content but above the page bg. */
+.section-glow::before,
+.section-glow-r::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.section-glow::before {
+  background: radial-gradient(
+    640px 320px at 12% -5%,
+    color-mix(in srgb, var(--accent) 6%, transparent),
+    transparent 70%
+  );
+}
+.section-glow-r::before {
+  background: radial-gradient(
+    640px 320px at 88% -5%,
+    color-mix(in srgb, var(--accent) 6%, transparent),
+    transparent 70%
+  );
 }
 
 .text-balance {

@@ -8,29 +8,49 @@ import { TerminalWindow } from "@/components/ui/terminal-window";
 import { Reveal } from "@/components/ui/reveal";
 import { Magnetic } from "@/components/ui/magnetic";
 
-type Status = "idle" | "sending" | "sent";
+type Status = "idle" | "sending" | "sent" | "error";
 
 export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  // honeypot — hidden from humans; bots that fill it get silently dropped
+  const [company, setCompany] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (status === "sending") return;
     setStatus("sending");
 
-    const subject = encodeURIComponent(`Portfolio contact from ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message, company }),
+      });
+      const data = (await res.json().catch(() => null)) as
+        | { ok: boolean; error?: string }
+        | null;
 
-    setTimeout(() => {
-      window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
-      setStatus("sent");
-    }, 900);
+      if (res.ok && data?.ok) {
+        setStatus("sent");
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        setErrorMessage(data?.error ?? "Something went wrong.");
+        setStatus("error");
+      }
+    } catch {
+      setErrorMessage("Network error — please try again.");
+      setStatus("error");
+    }
   };
 
   return (
-    <section id="contact" className="relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="contact" className="section-glow relative px-6 py-14 sm:px-10 sm:py-20">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
           <SectionLabel index="07" title="contact" command="curl -X POST /api/contact" />
@@ -40,6 +60,17 @@ export function Contact() {
           <TerminalWindow title="bhavik@portfolio:~$ curl -X POST /api/contact">
             <div className="grid gap-10 sm:grid-cols-2">
               <form onSubmit={handleSubmit} className="space-y-5">
+                {/* honeypot: invisible to humans, tabbed over, ignored by the API when empty */}
+                <input
+                  type="text"
+                  name="company"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                />
                 <Field label="name" value={name} onChange={setName} required />
                 <Field
                   label="email"
@@ -60,7 +91,7 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={status === "sending"}
-                    className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-mono text-sm text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+                    className="accent-gradient inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm text-accent-foreground transition-[filter] hover:brightness-110 disabled:opacity-60"
                   >
                     {status === "sending" ? "sending..." : "send_request()"}
                   </button>
@@ -94,8 +125,8 @@ export function Contact() {
                         exit={{ opacity: 0 }}
                         className="whitespace-pre-wrap text-fg-muted"
                       >
-{`> POST /api/contact
-> connecting...`}
+{`> POST /contact
+> sending message...`}
                       </motion.pre>
                     )}
                     {status === "sent" && (
@@ -108,10 +139,34 @@ export function Contact() {
                       >
 {`< 200 OK
 {
-  "message": "opening mail client...",
-  "to": "${profile.email}"
+  "message": "delivered — thanks for reaching out!",
+  "response_eta": "~24h"
 }`}
                       </motion.pre>
+                    )}
+                    {status === "error" && (
+                      <motion.div
+                        key="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <pre className="whitespace-pre-wrap text-danger">
+{`< 5xx ERROR
+{
+  "error": "${errorMessage.replaceAll('"', "'")}"
+}`}
+                        </pre>
+                        <p className="mt-3 text-fg-muted">
+                          You can also email me directly at{" "}
+                          <a
+                            href={`mailto:${profile.email}`}
+                            className="text-accent underline-offset-4 hover:underline"
+                          >
+                            {profile.email}
+                          </a>
+                        </p>
+                      </motion.div>
                     )}
                   </AnimatePresence>
                 </div>

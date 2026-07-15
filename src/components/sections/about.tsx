@@ -6,7 +6,7 @@ import { Tilt3DCard } from "@/components/ui/tilt-3d-card";
 
 export function About() {
   return (
-    <section id="about" className="relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="about" className="section-glow relative px-6 py-14 sm:px-10 sm:py-20">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
           <SectionLabel index="01" title="about" command="cat about.txt" />
@@ -49,7 +49,7 @@ export function About() {
                 <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {profile.quickStats.map((stat) => (
                     <Tilt3DCard key={stat.label} maxTilt={6} className="h-full">
-                      <div className="hover-glow h-full rounded-lg border border-border bg-bg-elevated/60 p-4">
+                      <div className="hover-glow panel-gradient h-full rounded-lg border border-border bg-bg-elevated/60 p-4">
                         <div className="text-lg font-semibold text-fg sm:text-xl">
                           {stat.value}
                         </div>

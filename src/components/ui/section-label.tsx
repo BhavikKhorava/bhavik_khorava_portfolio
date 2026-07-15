@@ -9,12 +9,12 @@ interface SectionLabelProps {
 
 export function SectionLabel({ index, title, command, className }: SectionLabelProps) {
   return (
-    <div className={cn("mb-10 flex flex-col gap-2", className)}>
+    <div className={cn("mb-8 flex flex-col gap-2", className)}>
       <span className="font-mono text-xs tracking-wider text-fg-dim">
         {"// "}
         {index}_{title.toUpperCase().replace(/\s+/g, "_")}
       </span>
-      <h2 className="break-words text-2xl font-semibold tracking-tight text-fg sm:text-3xl md:text-4xl">
+      <h2 className="gradient-text break-words text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
         {command ? (
           <span className="font-mono text-xl text-accent sm:text-2xl md:text-3xl">$ </span>
         ) : null}
