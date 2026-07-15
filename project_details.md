@@ -93,9 +93,16 @@ classes, nothing is hardcoded as a raw hex in components.
 
 Utility classes also defined there: `.bg-grid` (faint grid backdrop),
 `.bg-scanlines`, `.glow-accent` (text glow), `.glass-panel` (blurred
-translucent card), `.text-balance`, `.hover-glow` (shared accent
-border+shadow card hover treatment), `.tag-chip` (terminal-autocomplete-style
-hover for skill/stack chips — accent tint + `›` marker). Reduced-motion users
+translucent card with a faint top sheen), `.text-balance`, `.hover-glow`
+(shared accent border+shadow card hover treatment), `.tag-chip`
+(terminal-autocomplete-style hover for skill/stack chips — accent tint + `›`
+marker), `.gradient-text` (silver-fade headline fill — hero h1 + section
+headings), `.accent-gradient` (amber gradient + inner highlight for primary
+CTAs), `.panel-gradient` (faint diagonal sheen layered over card surfaces),
+`.section-divider` (hairline gradient rule — rendered between sections by
+`page.tsx`'s local `Divider` and above the footer), `.section-glow` /
+`.section-glow-r` (per-section ambient amber radial glow, left/right variants
+alternated down the page). Reduced-motion users
 get all animations disabled via the `@media (prefers-reduced-motion: reduce)`
 block, and JS-driven effects (cursor, tilt, canvas globe, parallax) check
 reduced-motion themselves.

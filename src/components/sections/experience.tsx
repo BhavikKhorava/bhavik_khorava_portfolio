@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 export function Experience() {
   return (
-    <section id="experience" className="relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="experience" className="section-glow-r relative px-6 py-14 sm:px-10 sm:py-20">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
           <SectionLabel index="04" title="experience" command="ps aux --sort=-start" />

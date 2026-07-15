@@ -30,7 +30,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative px-6 py-24 sm:px-10 sm:py-32">
+    <section id="contact" className="section-glow relative px-6 py-14 sm:px-10 sm:py-20">
       <div className="mx-auto w-full max-w-4xl">
         <Reveal>
           <SectionLabel index="07" title="contact" command="curl -X POST /api/contact" />
@@ -60,7 +60,7 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={status === "sending"}
-                    className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-mono text-sm text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+                    className="accent-gradient inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm text-accent-foreground transition-[filter] hover:brightness-110 disabled:opacity-60"
                   >
                     {status === "sending" ? "sending..." : "send_request()"}
                   </button>
