@@ -125,8 +125,8 @@ export function Contact() {
                         exit={{ opacity: 0 }}
                         className="whitespace-pre-wrap text-fg-muted"
                       >
-{`> POST /api/contact
-> sending via smtp...`}
+{`> POST /contact
+> sending message...`}
                       </motion.pre>
                     )}
                     {status === "sent" && (

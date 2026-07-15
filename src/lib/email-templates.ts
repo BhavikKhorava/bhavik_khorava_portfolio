@@ -3,15 +3,15 @@
 // hex values mirroring the site's palette (globals.css :root).
 
 const COLORS = {
-  bg: "#08090b",
-  panel: "#101318",
-  elevated: "#0d0f12",
-  border: "#1f242b",
-  fg: "#e7e9ec",
-  muted: "#8b929c",
-  dim: "#565d67",
-  accent: "#f2a93b",
-  accentDark: "#0a0a0a",
+  bg: '#08090b',
+  panel: '#101318',
+  elevated: '#0d0f12',
+  border: '#1f242b',
+  fg: '#e7e9ec',
+  muted: '#8b929c',
+  dim: '#565d67',
+  accent: '#f2a93b',
+  accentDark: '#0a0a0a',
 };
 
 const MONO = "'JetBrains Mono', 'Courier New', monospace";
@@ -25,11 +25,11 @@ export interface ContactData {
 
 function escapeHtml(value: string) {
   return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 /** Shared dark shell: terminal-style header bar + content card + footer. */
@@ -76,7 +76,7 @@ function shell(title: string, bodyHtml: string) {
 export function ownerNotificationEmail(data: ContactData) {
   const name = escapeHtml(data.name);
   const email = escapeHtml(data.email);
-  const message = escapeHtml(data.message).replaceAll("\n", "<br />");
+  const message = escapeHtml(data.message).replaceAll('\n', '<br />');
 
   const body = `
     <p style="font-family:${MONO};font-size:12px;color:${COLORS.accent};margin:0 0 18px;">
@@ -104,7 +104,7 @@ export function ownerNotificationEmail(data: ContactData) {
 
   return {
     subject: `Portfolio contact from ${data.name}`,
-    html: shell("bhavik@portfolio:~$ inbox --new", body),
+    html: shell('bhavik@portfolio:~$ inbox --new', body),
     text: `New portfolio contact\n\nName: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`,
   };
 }
@@ -144,13 +144,13 @@ export function visitorAutoReplyEmail(data: ContactData) {
     </p>`;
 
   return {
-    subject: "Thanks for reaching out — Bhavik Khorava",
-    html: shell("bhavik@portfolio:~$ auto_reply", body),
+    subject: 'Thanks for reaching out Bhavik Khorava',
+    html: shell('bhavik@portfolio:~$ auto_reply', body),
     text:
       `Hi ${data.name},\n\n` +
-      "Thanks for reaching out! Your message just landed in my inbox. " +
-      "I read every message personally and I'll get back to you as soon as I can — usually within 24 hours.\n\n" +
-      "In the meantime, feel free to connect on LinkedIn: https://linkedin.com/in/bhavik-khorava\n\n" +
-      "Talk soon,\nBhavik Khorava\nNode.js Backend / AI Systems Engineer",
+      'Thanks for reaching out! Your message just landed in my inbox. ' +
+      "I read every message personally and I'll get back to you as soon as I can usually within 24 hours.\n\n" +
+      'In the meantime, feel free to connect on LinkedIn: https://linkedin.com/in/bhavik-khorava\n\n' +
+      'Talk soon,\nBhavik Khorava\nNode.js Backend / AI Systems Engineer',
   };
 }
