@@ -20,8 +20,16 @@ the codebase is organized.
 - **Lenis** — smooth scrolling, driven by `gsap.ticker` (see
   `src/components/providers/smooth-scroll-provider.tsx`)
 - **clsx + tailwind-merge** — combined into the `cn()` helper (`src/lib/utils.ts`)
-- No CMS, no backend/API routes — everything is static, content lives in
-  typed data files, contact form falls back to `mailto:`
+- **nodemailer** — powers the one API route, `POST /api/contact`
+  (`src/app/api/contact/route.ts`): validates the payload (honeypot `company`
+  field + per-IP in-memory rate limit) and relays the message over SMTP to
+  `CONTACT_TO_EMAIL`. SMTP credentials live in `.env` (never committed —
+  `.env.example` is the committed template; for Gmail use an App Password,
+  not the account password). If the env vars are missing it returns 503 and
+  the form shows its error state with a direct `mailto:` fallback link
+- No CMS, no database — page content is static and lives in typed data
+  files; the contact API route is the only server-side code (so the app
+  needs a Node/serverless host like Vercel, not pure static hosting)
 
 Run locally: `npm run dev`. Build: `npm run build`. Lint: `npm run lint`.
 
